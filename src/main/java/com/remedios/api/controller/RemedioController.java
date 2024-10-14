@@ -54,6 +54,10 @@ public class RemedioController {
     @DeleteMapping("/remedios/{id}")
     @Transactional
     public ResponseEntity<MessageResponse> delete(@PathVariable long  id) { //PathVariable serve para pegar o informação passada na rota dinamica
+        if (!repository.existsById(id)) {
+            var response = new MessageResponse("ID não encontrado", null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
         try {
             repository.deleteById(id);
             var response = new MessageResponse("Deletado com sucesso",null);
