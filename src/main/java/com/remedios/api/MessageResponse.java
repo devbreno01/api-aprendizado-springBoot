@@ -11,6 +11,8 @@ public class MessageResponse {
         this.lista = lista;
     }
 
+
+
     public String getMessage() {
         return message;
     }

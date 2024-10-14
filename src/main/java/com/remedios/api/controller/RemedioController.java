@@ -8,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api")
 public class RemedioController {
@@ -55,9 +53,17 @@ public class RemedioController {
 
     @DeleteMapping("/remedios/{id}")
     @Transactional
-    public void delete(@PathVariable long  id){
-        repository.deleteById(id);
-        //PathVariable serve para pegar o informação passada na rota dinamica
+    public ResponseEntity<MessageResponse> delete(@PathVariable long  id) { //PathVariable serve para pegar o informação passada na rota dinamica
+        try {
+            repository.deleteById(id);
+            var response = new MessageResponse("Deletado com sucesso",null);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            var response = new MessageResponse("Erro ao deletar:" + e.getMessage(), null);
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+
+
     }
 
 }
